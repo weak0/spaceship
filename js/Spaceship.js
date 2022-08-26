@@ -37,22 +37,22 @@ export default class SpaceShip {
 
     steerSpaceShip(e) {
 
-        let spaceshipToLeft = parseInt(this.spaceShip.style.left) - (0 - this.spaceShip.offsetWidth / 2);
-        let spaceshipToRight = window.innerWidth - spaceshipToLeft;
+        const spaceshipToLeft = parseInt(this.spaceShip.style.left) - (0 - this.spaceShip.offsetWidth / 2);
+        const spaceshipToRight = window.innerWidth - spaceshipToLeft;
 
         switch (e.keyCode) {
             case 37:
-                if (spaceshipToLeft > 0) {
+                if (spaceshipToLeft > SPACESHIP_PX_MOVE) {
                     this.spaceShip.style.left = `${parseInt(this.spaceShip.style.left) - SPACESHIP_PX_MOVE}px`;
                 }
                 break
             case 39:
-                if (spaceshipToRight > 0){ 
+                if (spaceshipToRight > SPACESHIP_PX_MOVE ){ 
                 this.spaceShip.style.left = `${parseInt(this.spaceShip.style.left) + SPACESHIP_PX_MOVE}px`;
                 }
                 break;
 
-        }
+        } 
 
     }
 
