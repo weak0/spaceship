@@ -1,7 +1,8 @@
-import {
-    Enemy
-} from './Enemy.js';
-import SpaceShip from './Spaceship.js';
+import { Enemy} from './Enemy.js';
+import { Player } from './Player.js';
+import { SpaceShip } from './Spaceship.js';
+
+
 
 class Game {
 
@@ -11,18 +12,35 @@ class Game {
     eniemies = [];
     enemyMoveIntreval = null;
 
+    modal = document.querySelector('[data-modal]')
+    modalScore = document.querySelector('[data-score-info]')
+    modalButton= document.querySelector('[data-button]')
+
+
 
 
 
     gameInit() {
 
-        this.spaceShip.init()
-        this.enemiesInterval = setInterval(() => this.generateEnemies(), 1000)
-        this.positionInterval = setInterval(() => this.getPosition(), 200)
+        this.spaceShip.init();
+        this.newGame();
+        this.modalButton.addEventListener('click', () => this.newGame())
 
     }
 
-    getPosition() {
+    newGame() {
+
+        this.modal.classList.add('hide')
+        this.player = new Player();
+        this.player.updateLivesText();
+        this.player.updateScoreText();
+        this.enemiesInterval = setInterval(() => this.generateEnemies(), 1000);
+        this.positionInterval = setInterval(() => this.getPosition(), 200);
+
+    }
+
+    getPosition(){
+
             this.eniemies.forEach((enemy, index, arr) => {
 
                 const enemyPosition = {
@@ -36,6 +54,8 @@ class Game {
                 if (enemy.element.offsetTop > window.innerHeight) {
 
                     enemy.remove()
+                    this.player.updateLives();
+                    this.endGameCheck();
                     arr.splice(index, 1)
 
                 }
@@ -61,6 +81,7 @@ class Game {
                      misilesPosition.left <= enemyPosition.right){
                         enemy.hit()
                         if(enemy.lives === 0){
+                        this.player.updateScore()
                         arr.splice(index, 1)
                         }
 
@@ -109,6 +130,31 @@ class Game {
             return obj
 
         }
+
+    }
+
+    endGameCheck() {
+
+        if(!this.player.lives) {
+
+            this.modal.classList.remove('hide');
+            this.modalScore.textContent = `You lose! Score: ${this.player.score}`;
+            this.clean();
+            
+
+
+        }
+
+    }
+
+    clean() {
+
+        clearInterval(this.enemiesInterval);
+        clearInterval(this.enemyMoveIntreval);
+        clearInterval(this.positionInterval);
+        this.eniemies.forEach((enemy) => enemy.remove());
+        this.spaceShip.missilesArr.forEach(missile => missile.remove())
+        this.spaceShip.setPositon();
 
     }
 

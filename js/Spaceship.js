@@ -2,7 +2,7 @@ import { Missile } from "./Missile.js"
 
 const SPACESHIP_PX_MOVE = 5
 
-export default class SpaceShip {
+export class SpaceShip {
 
     
     leftArrow = false 
