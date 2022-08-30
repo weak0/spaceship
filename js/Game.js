@@ -5,25 +5,42 @@ import SpaceShip from './Spaceship.js';
 
 class Game {
 
-    spaceShip = new SpaceShip('[data-spaceship]');    
-    missilesPositionInterval = null;
+    spaceShip = new SpaceShip('[data-spaceship]');
+    positionInterval = null;
     enemiesInterval = null;
     eniemies = [];
     enemyMoveIntreval = null;
 
 
 
+
     gameInit() {
 
         this.spaceShip.init()
-        this.missilesPositionInterval = setInterval(() => this.getMissilesPosition(), 200)
         this.enemiesInterval = setInterval(() => this.generateEnemies(), 1000)
-        this.enemiesPositionInterval = setInterval(() => this.getMissilesPosition(), 200)
+        this.positionInterval = setInterval(() => this.getPosition(), 200)
 
     }
 
-    getMissilesPosition() {
-        this.spaceShip.missilesArr.forEach((missile, index, arr) => {
+    getPosition() {
+            this.eniemies.forEach((enemy, index, arr) => {
+
+                const enemyPosition = {
+                    top: enemy.element.offsetTop,
+                    bottom: enemy.element.offsetTop + enemy.element.offsetHeight,
+                    left: enemy.element.offsetLeft,
+                    right: enemy.element.offsetLeft + enemy.element.offsetWidth,
+
+                }
+
+                if (enemy.element.offsetTop > window.innerHeight) {
+
+                    enemy.remove()
+                    arr.splice(index, 1)
+
+                }
+
+                    this.spaceShip.missilesArr.forEach((missile, index, arrMissiles) => {
             const misilesPosition = {
                 top: missile.element.offsetTop,
                 bottom: missile.element.offsetTop + missile.element.offsetHeight,
@@ -34,49 +51,63 @@ class Game {
             if (missile.element.offsetTop < 0) {
 
                 missile.remove()
-                arr.splice(index, 1)
+                arrMissiles.splice(index, 1)
 
-            }
+            }    
+
+                if (misilesPosition.bottom >= enemyPosition.top &&
+                    misilesPosition.top <= enemyPosition.bottom &&
+                    misilesPosition.right >= enemyPosition.left &&
+                     misilesPosition.left <= enemyPosition.right){
+                        enemy.hit()
+                        if(enemy.lives === 0){
+                        arr.splice(index, 1)
+                        }
+
+                        missile.remove()
+                        arrMissiles.splice(index, 1)
+
+                    }
+
+
+            })
+
         })
+
     }
 
     generateEnemies() {
-        const enemy = new Enemy(this.randomClass())
+        const obj = this.randomClass()
+        const enemy = new Enemy(obj)
         enemy.init()
         this.eniemies.push(enemy)
-        this.enemyMoveIntreval = setInterval(() => enemy.enemyMove(), 50 )
+        this.enemyMoveIntreval = setInterval(() => enemy.enemyMove(), 50)
     }
 
-    getMissilesPosition() {
-        this.eniemies.forEach((enemy, index, arr) => {
-
-            const enemyPosition = {
-                top: enemy.element.offsetTop,
-                bottom: enemy.element.offsetTop + enemy.element.offsetHeight,
-                left: enemy.element.offsetLeft,
-                right: enemy.element.offsetLeft + enemy.element.offsetWidth,
-
-            }
-            if (enemy.element.offsetTop > window.innerHeight) {
-
-
-
-                enemy.remove()
-                arr.splice(index, 1)
-
-            }
-        })
-    }
 
     randomClass() {
 
-        const random = Math.floor( Math.random() * 5) + 1
+        const random = Math.floor(Math.random() * 5) + 1
 
         if (random % 5) {
-            return 'enemy'
-        }
-        else {
-            return 'enemy--big'
+
+            const obj = {}
+
+            return obj
+
+
+        } else {
+            const obj = {
+
+                className: 'enemy--big',
+                lives: 3,
+                explosionClassName: 'explosion--big',
+                enemySpeed: 2 
+                
+            }
+
+            return obj
+
         }
 
     }
