@@ -3,14 +3,15 @@ export class Enemy {
     container = document.querySelector('[data-container]')
    
 
-    constructor({className = 'enemy', lives = 1, explosionClassName = 'explosion', enemySpeed = 5 }) {
+    constructor() {
 
+        this.randomizeEnemy = this.randomClass()
         this.element = document.createElement('div')
-        this.className = className
+        this.className = this.randomizeEnemy.className
         this.y = 0;
-        this.lives = lives;
-        this.explosionClassName = explosionClassName;
-        this.enemySpeed = enemySpeed
+        this.lives = this.randomizeEnemy.lives;
+        this.explosionClassName = this.randomizeEnemy.explosionClassName;
+        this.enemySpeed = this.randomizeEnemy.enemySpeed
         
 
     }
@@ -38,7 +39,7 @@ export class Enemy {
 
     }
 
-    remove() {
+    removeElement() {
 
         this.element.remove()
         clearInterval(this.enemyMoveIntreval)
@@ -52,10 +53,43 @@ export class Enemy {
 
         this.element.classList.remove(this.className)
         this.element.classList.add(this.explosionClassName)
-        setTimeout( () => this.remove(), 600)
+        setTimeout( () => this.removeElement(), 600)
 
         }
 
+    }
+
+    randomClass() {
+
+        const random = Math.floor(Math.random() * 5) + 1
+
+        if (random % 5) {
+
+            const obj = {
+
+                className: 'enemy',
+                lives: 1,
+                explosionClassName: 'explosion',
+                enemySpeed: 5 
+
+            }
+
+            return obj
+
+
+        } else {
+            const obj = {
+
+                className: 'enemy--big',
+                lives: 3,
+                explosionClassName: 'explosion--big',
+                enemySpeed: 2 
+                
+            }
+
+            return obj
+
+        }
     }
 
     
