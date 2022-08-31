@@ -1,7 +1,14 @@
+let speed = 5
+let speed_big = 2
+
+
+
 export class Enemy {
 
     container = document.querySelector('[data-container]')
-   
+    enemyIncraseSpeedInterval = null
+    
+
 
     constructor() {
 
@@ -11,7 +18,7 @@ export class Enemy {
         this.y = 0;
         this.lives = this.randomizeEnemy.lives;
         this.explosionClassName = this.randomizeEnemy.explosionClassName;
-        this.enemySpeed = this.randomizeEnemy.enemySpeed
+        this.enemySpeedProp = this.randomizeEnemy.enemySpeed
         
 
     }
@@ -22,6 +29,7 @@ export class Enemy {
         this.x = this.drawPosition(); 
         this.element.style.left = `${this.x}px`
         this.element.style.top = `${this.y}px`
+
     }
 
     drawPosition() {
@@ -34,7 +42,7 @@ export class Enemy {
 
     enemyMove() {
 
-        this.y = this.element.offsetTop + this.enemySpeed
+        this.y = this.element.offsetTop + this.enemySpeedProp
         this.element.style.top = `${this.y}px`        
 
     }
@@ -61,6 +69,7 @@ export class Enemy {
 
     randomClass() {
 
+
         const random = Math.floor(Math.random() * 5) + 1
 
         if (random % 5) {
@@ -70,9 +79,11 @@ export class Enemy {
                 className: 'enemy',
                 lives: 1,
                 explosionClassName: 'explosion',
-                enemySpeed: 5 
+                enemySpeed: this.enemySpeed()
 
             }
+
+
 
             return obj
 
@@ -83,7 +94,7 @@ export class Enemy {
                 className: 'enemy--big',
                 lives: 3,
                 explosionClassName: 'explosion--big',
-                enemySpeed: 2 
+                enemySpeed: this.enemySpeedBig()
                 
             }
 
@@ -91,6 +102,24 @@ export class Enemy {
 
         }
     }
+
+    enemySpeedBig() {
+
+
+    speed_big++
+    const newSpeed = speed_big
+    return newSpeed
+
+
+    }
+
+    enemySpeed() {
+
+        speed++
+        const newSpeed = speed
+        return newSpeed
+    }
+
 
     
 

@@ -171,3 +171,46 @@ body {
 .hit {
   background-color: var(--secondary-color);
 }
+
+.upgrades {
+
+  color: white;
+  display: block;
+  position: absolute;
+  bottom:100px;
+  right: 0px;
+
+ 
+
+}
+
+.upgrade {
+
+  display: block;
+  border-radius: 15px 0px 0px 15px;
+  background-color: rgba(63, 18, 77, 0.5);
+  box-shadow: 0 0 5px 1px #09fcfd;
+  text-align: center;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 10px;
+  text-transform: uppercase;
+  margin: 20px 0 0 0;
+
+}
+
+.upgrade:hover{
+
+  background-color: rgba(113, 68, 127, 0.5);
+
+}
+
+.upgrades img {
+
+  height: 24px;
+  display: block;
+  margin: 0 auto 5px auto;
+
+}
+
+

@@ -12,10 +12,11 @@ export class Player {
 
     }
 
+
     updateLives() {
 
         this.lives--
-        this.updateLivesText()
+        this.updateText()
         this.container.classList.add('hit')
         setTimeout(() => this.container.classList.remove('hit') ,200)
     }
@@ -23,19 +24,22 @@ export class Player {
     updateScore() {
 
         this.score++
-        this.updateScoreText()
+        this.updateText()
 
     }
 
-    updateLivesText() {
+    updateText() {
 
         this.livesInfo.textContent = `Lives: ${this.lives}`;
+        this.scoreInfo.textContent = `Score: ${this.score}`;
         
     }
-    updateScoreText() {
 
-        this.scoreInfo.textContent = `Score: ${this.score}`;
 
+    reset(){
+
+        this.lives = 3;
+        this.score = 0;
 
     }
 

@@ -12,35 +12,46 @@ import {
 
 class Game {
 
-    spaceShip = new SpaceShip('[data-spaceship]');
+
     positionInterval = null;
     enemiesInterval = null;
     eniemies = [];
     enemyMoveIntreval = null;
 
+
     modal = document.querySelector('[data-modal]')
     modalScore = document.querySelector('[data-score-info]')
     modalButton = document.querySelector('[data-button]')
     container = document.querySelector('[data-container]')
+    upgradeSpaceshipBtn = document.querySelector('[data-upgrade-spaceship]')
+    upgradeMissileBtn = document.querySelector('[data-upgrade-missile]')
+    
 
+    player = new Player();
+    spaceShip = new SpaceShip('[data-spaceship]')
 
 
 
 
     gameInit() {
 
-        this.spaceShip.init();
+
         this.newGame();
         this.modalButton.addEventListener('click', () => this.newGame())
+        this.upgradeSpaceshipBtn.addEventListener('click', () => this.upgradeSpaceship())
+        this.upgradeMissileBtn.addEventListener('click',  () => this.upgradeMissile())
+        this.spaceShip.init();
+
+
 
     }
 
     newGame() {
 
         this.modal.classList.add('hide')
-        this.player = new Player();
-        this.player.updateLivesText();
-        this.player.updateScoreText();
+        this.player.reset()
+        this.spaceShip.reset()
+        this.player.updateText();
         this.enemiesInterval = setInterval(() => this.generateEnemies(), 1000);
         this.positionInterval = setInterval(() => this.getPosition(), 50);
 
@@ -121,6 +132,8 @@ class Game {
         enemy.init()
         this.eniemies.push(enemy)
         this.enemyMoveIntreval = setInterval(() => enemy.enemyMove(), 50)
+      
+        
     }
 
     endGameCheck() {
@@ -142,6 +155,32 @@ class Game {
             element.removeElement()
         })
         this.eniemies.splice(0)
+    }
+
+    upgradeMissile() {
+
+        if(this.player.score >= 1) {
+
+            this.player.score = this.player.score-1;
+            this.player.updateText()
+            this.spaceShip.MISSILE_SPEED++
+
+        }
+
+    }
+    upgradeSpaceship() {
+
+
+        if(this.player.score >= 1) {
+
+            this.player.score = this.player.score-1;
+            this.player.updateText()
+            this.spaceShip.SPACESHIP_SPEED = this.spaceShip.SPACESHIP_SPEED + 2
+
+        }
+
+
+
     }
 
 }

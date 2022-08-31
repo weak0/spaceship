@@ -1,6 +1,6 @@
 import { Missile } from "./Missile.js"
 
-const SPACESHIP_PX_MOVE = 5
+
 
 export class SpaceShip {
 
@@ -8,6 +8,9 @@ export class SpaceShip {
     leftArrow = false 
     rightArrow = false
     missilesArr = []
+    SPACESHIP_SPEED = 5
+    MISSILE_SPEED = 1
+
 
 
 
@@ -89,21 +92,27 @@ export class SpaceShip {
         const spaceshipToRight = window.innerWidth - spaceshipToLeft;
 
         if (this.leftArrow && spaceshipToLeft > 0) {
-            this.spaceShip.style.left = `${parseInt(this.spaceShip.style.left) - SPACESHIP_PX_MOVE}px`;
+            this.spaceShip.style.left = `${parseInt(this.spaceShip.style.left) - this.SPACESHIP_SPEED}px`;
         }
 
         if (this.rightArrow && spaceshipToRight > 0){
-            this.spaceShip.style.left = `${parseInt(this.spaceShip.style.left) + SPACESHIP_PX_MOVE}px`;
+            this.spaceShip.style.left = `${parseInt(this.spaceShip.style.left) + this.SPACESHIP_SPEED}px`;
         }
     }
 
     shot() {
 
-        const missile = new Missile(parseInt(this.spaceShip.style.left) + this.spaceShip.offsetWidth/2, this.spaceShip.offsetTop);
+        const missile = new Missile(parseInt(this.spaceShip.style.left) + this.spaceShip.offsetWidth/2, this.spaceShip.offsetTop, this.MISSILE_SPEED);
         missile.init();
         this.missilesArr.push(missile)
 
 
+    }
+
+    reset(){
+
+        this.MISSILE_SPEED = 1
+        this.SPACESHIP_SPEED = 5
     }
 
 
