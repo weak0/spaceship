@@ -17,6 +17,8 @@ class Game {
     enemiesInterval = null;
     eniemies = [];
     enemyMoveIntreval = null;
+    incraseEnemySpeed = 0;
+    incraseEnemySpeedInterval = null
 
 
     modal = document.querySelector('[data-modal]')
@@ -128,7 +130,11 @@ class Game {
     }
 
     generateEnemies() {
-        const enemy = new Enemy()
+
+        if( !(this.player.score % 10)){
+            this.incraseEnemySpeed++
+        }
+        const enemy = new Enemy(this.incraseEnemySpeed)
         enemy.init()
         this.eniemies.push(enemy)
         this.enemyMoveIntreval = setInterval(() => enemy.enemyMove(), 50)
@@ -151,17 +157,18 @@ class Game {
         clearInterval(this.enemiesInterval);
         clearInterval(this.enemyMoveIntreval);
         clearInterval(this.positionInterval);
+        this.incraseEnemySpeed = 0;
         this.eniemies.forEach(element => {
             element.removeElement()
         })
-        this.eniemies.splice(0)
+        this.eniemies.splice(0);
     }
 
     upgradeMissile() {
 
-        if(this.player.score >= 1) {
+        if(this.player.score >= 20) {
 
-            this.player.score = this.player.score-1;
+            this.player.score = this.player.score-20;
             this.player.updateText()
             this.spaceShip.MISSILE_SPEED++
 
@@ -171,9 +178,9 @@ class Game {
     upgradeSpaceship() {
 
 
-        if(this.player.score >= 1) {
+        if(this.player.score >= 20) {
 
-            this.player.score = this.player.score-1;
+            this.player.score = this.player.score-20;
             this.player.updateText()
             this.spaceShip.SPACESHIP_SPEED = this.spaceShip.SPACESHIP_SPEED + 2
 

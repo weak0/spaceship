@@ -8,8 +8,8 @@ export class SpaceShip {
     leftArrow = false 
     rightArrow = false
     missilesArr = []
-    SPACESHIP_SPEED = 5
-    MISSILE_SPEED = 1
+
+
 
 
 
@@ -101,6 +101,7 @@ export class SpaceShip {
     }
 
     shot() {
+
 
         const missile = new Missile(parseInt(this.spaceShip.style.left) + this.spaceShip.offsetWidth/2, this.spaceShip.offsetTop, this.MISSILE_SPEED);
         missile.init();
