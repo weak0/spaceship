@@ -18,12 +18,17 @@ body {
   font-family: 'Lato', sans-serif;
   box-sizing: border-box;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000;
 }
 
 .container {
   width: 100vw;
+  max-width: 1000px;
   height: 100vh;
-  background-color: #000;
+  background-image: url('../images/background.jpg');
   position: relative;
 }
 
@@ -169,7 +174,8 @@ body {
 }
 
 .hit {
-  background-color: var(--secondary-color);
+
+  box-shadow: 0 0 15px 5px var(--secondary-color);
 }
 
 .upgrades {
@@ -189,13 +195,16 @@ body {
   display: block;
   border-radius: 15px 0px 0px 15px;
   background-color: rgba(63, 18, 77, 0.5);
-  box-shadow: 0 0 5px 1px #09fcfd;
+  border: 2px solid #09fcfd ;
+  border-right: none;
   text-align: center;
-  padding: 10px 15px;
+  padding: 10px 5px 10px 10px;
   cursor: pointer;
-  font-size: 10px;
+  font-size: 16px;
+  width: 80px;
   text-transform: uppercase;
   margin: 20px 0 0 0;
+  
 
 }
 
@@ -207,10 +216,24 @@ body {
 
 .upgrades img {
 
-  height: 24px;
+  height: 48px;
   display: block;
   margin: 0 auto 5px auto;
 
 }
 
+i, p {
+  
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: #09fcfd;
+  
+}
 
+p.cost {
+
+  font-size: 20px;
+
+}

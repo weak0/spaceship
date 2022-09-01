@@ -1,5 +1,5 @@
 import { Missile } from "./Missile.js"
-
+import { container } from "./Game.js"
 
 
 export class SpaceShip {
@@ -8,6 +8,8 @@ export class SpaceShip {
     leftArrow = false 
     rightArrow = false
     missilesArr = []
+    SPACESHIP_SPEED = 6
+
 
 
 
@@ -48,7 +50,7 @@ export class SpaceShip {
     setPositon() {
 
         this.spaceShip.style.bottom = '10px';
-        this.spaceShip.style.left = `${window.innerWidth / 2 - this.spaceShip.offsetWidth / 2}px`
+        this.spaceShip.style.left = `${container.offsetLeft + container.offsetWidth / 2 - this.spaceShip.offsetWidth / 2}px`
 
     }
 
@@ -88,14 +90,11 @@ export class SpaceShip {
 
     steerSpaceship() {
 
-        const spaceshipToLeft = parseInt(this.spaceShip.style.left) + this.spaceShip.offsetWidth / 2;
-        const spaceshipToRight = window.innerWidth - spaceshipToLeft;
-
-        if (this.leftArrow && spaceshipToLeft > 0) {
+        if (this.leftArrow && this.getPositionLeft() > 0) {
             this.spaceShip.style.left = `${parseInt(this.spaceShip.style.left) - this.SPACESHIP_SPEED}px`;
         }
 
-        if (this.rightArrow && spaceshipToRight > 0){
+        if (this.rightArrow && this.getPositionRight() > 0){
             this.spaceShip.style.left = `${parseInt(this.spaceShip.style.left) + this.SPACESHIP_SPEED}px`;
         }
     }
@@ -103,7 +102,7 @@ export class SpaceShip {
     shot() {
 
 
-        const missile = new Missile(parseInt(this.spaceShip.style.left) + this.spaceShip.offsetWidth/2, this.spaceShip.offsetTop, this.MISSILE_SPEED);
+        const missile = new Missile(parseInt(this.spaceShip.style.left) - container.offsetLeft + this.spaceShip.offsetWidth/2, this.spaceShip.offsetTop, this.MISSILE_SPEED);
         missile.init();
         this.missilesArr.push(missile)
 
@@ -113,7 +112,25 @@ export class SpaceShip {
     reset(){
 
         this.MISSILE_SPEED = 1
-        this.SPACESHIP_SPEED = 5
+        this.SPACESHIP_SPEED = 6
+    }
+
+    getPositionLeft() {
+
+
+        
+        const spaceshipToLeft = parseInt(this.spaceShip.style.left) - container.offsetLeft;
+        return spaceshipToLeft
+
+
+    }
+
+    getPositionRight (){
+
+        const spaceshipToRight = container.offsetWidth - (parseInt(this.spaceShip.style.left) - container.offsetLeft + this.spaceShip.offsetWidth);
+        return spaceshipToRight
+
+
     }
 
 

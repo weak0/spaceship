@@ -1,9 +1,9 @@
-
+import { container } from "./Game.js"
 
 
 export class Enemy {
 
-    container = document.querySelector('[data-container]')
+    
     
 
 
@@ -22,7 +22,7 @@ export class Enemy {
 
     init() {
         this.element.classList.add(this.className)
-        this.container.appendChild(this.element)
+        container.appendChild(this.element)
         this.x = this.drawPosition(); 
         this.element.style.left = `${this.x}px`
         this.element.style.top = `${this.y}px`
@@ -31,7 +31,7 @@ export class Enemy {
 
     drawPosition() {
 
-        const random =  Math.floor(Math.random() * (window.innerWidth - this.element.offsetWidth))
+        const random =  Math.floor(Math.random() * ( container.offsetLeft + container.offsetWidth - this.element.offsetWidth - container.offsetLeft) + container.offsetLeft)
 
         return random
 

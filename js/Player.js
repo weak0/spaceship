@@ -1,9 +1,10 @@
 
+import { container } from "./Game.js";
+
 export class Player {
 
     scoreInfo = document.querySelector('[data-score]')
     livesInfo = document.querySelector('[data-lives]')
-    container = document.querySelector('[data-container]')
 
     constructor() {
 
@@ -17,8 +18,8 @@ export class Player {
 
         this.lives--
         this.updateText()
-        this.container.classList.add('hit')
-        setTimeout(() => this.container.classList.remove('hit') ,200)
+        container.classList.add('hit')
+        setTimeout(() => container.classList.remove('hit') ,200)
     }
 
     updateScore() {
@@ -42,6 +43,7 @@ export class Player {
         this.score = 0;
 
     }
+
 
     
 

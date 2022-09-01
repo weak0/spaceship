@@ -9,6 +9,8 @@ import {
 } from './Spaceship.js';
 
 
+export const  container = document.querySelector('[data-container]')
+
 
 class Game {
 
@@ -18,13 +20,13 @@ class Game {
     eniemies = [];
     enemyMoveIntreval = null;
     incraseEnemySpeed = 0;
-    incraseEnemySpeedInterval = null
+    generateEnemyTime = 1000;
 
 
     modal = document.querySelector('[data-modal]')
     modalScore = document.querySelector('[data-score-info]')
     modalButton = document.querySelector('[data-button]')
-    container = document.querySelector('[data-container]')
+  
     upgradeSpaceshipBtn = document.querySelector('[data-upgrade-spaceship]')
     upgradeMissileBtn = document.querySelector('[data-upgrade-missile]')
     
@@ -40,8 +42,8 @@ class Game {
 
         this.newGame();
         this.modalButton.addEventListener('click', () => this.newGame())
-        this.upgradeSpaceshipBtn.addEventListener('click', () => this.upgradeSpaceship())
-        this.upgradeMissileBtn.addEventListener('click',  () => this.upgradeMissile())
+        window.addEventListener('keyup', (e) => e.key === 'x' ? this.upgradeSpaceship() : () => {});
+        window.addEventListener('keyup',  (e) => e.key === 'z' ?  this.upgradeMissile() : () => {});
         this.spaceShip.init();
 
 
@@ -51,10 +53,10 @@ class Game {
     newGame() {
 
         this.modal.classList.add('hide')
-        this.player.reset()
         this.spaceShip.reset()
         this.player.updateText();
-        this.enemiesInterval = setInterval(() => this.generateEnemies(), 1000);
+        this.generateEnemyTime = 1000;
+        this.enemiesInterval = setInterval(() => this.generateEnemies(), this.generateEnemyTime);
         this.positionInterval = setInterval(() => this.getPosition(), 50);
 
     }
@@ -66,8 +68,8 @@ class Game {
             const enemyPosition = {
                 top: enemy.element.offsetTop,
                 bottom: enemy.element.offsetTop + enemy.element.offsetHeight,
-                left: enemy.element.offsetLeft,
-                right: enemy.element.offsetLeft + enemy.element.offsetWidth,
+                left: enemy.element.offsetLeft - container.offsetLeft,
+                right: enemy.element.offsetLeft + enemy.element.offsetWidth - container.offsetLeft,
             }
 
             this.enemyHit(enemyPosition, enemy, indexEnemy)
@@ -88,7 +90,7 @@ class Game {
 
     enemyHit(enemyPosition, enemy, index) {
 
-        if (enemyPosition.top > window.innerHeight) {
+        if (enemyPosition.top > container.offsetHeight) {
 
             enemy.removeElement()
             this.player.updateLives();
@@ -131,7 +133,14 @@ class Game {
 
     generateEnemies() {
 
-        if( !(this.player.score % 10)){
+        if(!(this.player.score % 25) && this.player.score != 0 ) {
+
+            clearInterval(this.enemiesInterval)
+            this.generateEnemyTime =  this.generateEnemyTime * 0.75
+            this.enemiesInterval = setInterval(() => this.generateEnemies(), this.generateEnemyTime);
+        }
+
+        if( !(this.player.score % 10) && this.player.score != 0){
             this.incraseEnemySpeed++
         }
         const enemy = new Enemy(this.incraseEnemySpeed)
@@ -162,28 +171,32 @@ class Game {
             element.removeElement()
         })
         this.eniemies.splice(0);
+        this.spaceShip.missilesArr.forEach(element => element.remove())
+        this.spaceShip.missilesArr.splice(0)
+        this.player.reset()
+        
     }
 
-    upgradeMissile() {
+    upgradeMissile(e) {
+
 
         if(this.player.score >= 20) {
 
-            this.player.score = this.player.score-20;
+            this.player.score = this.player.score - 20;
             this.player.updateText()
             this.spaceShip.MISSILE_SPEED++
 
         }
 
     }
-    upgradeSpaceship() {
+    upgradeSpaceship(e) {
 
 
         if(this.player.score >= 20) {
 
             this.player.score = this.player.score-20;
             this.player.updateText()
-            this.spaceShip.SPACESHIP_SPEED = this.spaceShip.SPACESHIP_SPEED + 2
-
+            this.spaceShip.SPACESHIP_SPEED = this.spaceShip.SPACESHIP_SPEED+ 2
         }
 
 
